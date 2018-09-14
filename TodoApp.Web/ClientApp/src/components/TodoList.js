@@ -1,7 +1,7 @@
-import React, {Component } from 'react';
+import React from 'react';
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import {Checkbox} from "react-bootstrap";
+import TodoListItem from "./TodoListItem";
 
 const TodoList = () => (
     <Query
@@ -20,9 +20,7 @@ const TodoList = () => (
             if (error) return <p>Error :(</p>;
 
             return data.todos.map(({ id, description, complete }) => (
-                <div key={id}>
-                    <p><Checkbox checked={complete} />{description}</p>
-                </div>
+                <TodoListItem key={id} id={id} checked={complete} description={description}/>
             ));
         }}
     </Query>

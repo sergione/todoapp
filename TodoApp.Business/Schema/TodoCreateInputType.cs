@@ -8,7 +8,7 @@ namespace TodoApp.Business.Schema
     {
         public TodoCreateInputType()
         {
-            Name = "OrderInput";
+            Name = "TodoInput";
             Field<NonNullGraphType<StringGraphType>>("description");
             Field<NonNullGraphType<BooleanGraphType>>("complete");
         }
