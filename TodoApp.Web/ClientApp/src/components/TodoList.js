@@ -3,9 +3,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import TodoListItem from "./TodoListItem";
 
-const TodoList = () => (
-    <Query
-        query={gql`
+const GET_TODOS = gql`
           {
             todos {
               id
@@ -13,8 +11,10 @@ const TodoList = () => (
               complete
             }
           }
-        `}
-    >
+        `;
+
+const TodoList = () => (
+    <Query query={GET_TODOS}>
         {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error :(</p>;

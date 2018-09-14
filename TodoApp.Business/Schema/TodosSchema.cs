@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Resolvers;
 using GraphQL.Subscription;
@@ -25,7 +28,21 @@ namespace TodoApp.Business.Schema
         public TodosQuery(ITodosService todos)
         {
             Name = "Query";
-            Field<ListGraphType<TodoType>>("todos", resolve: context => todos.GetTodosAsync());
+            Field<ListGraphType<TodoType>>(
+                "todos",
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "todoId"}),
+                resolve: context =>
+                {
+                    var todoId = context.GetArgument<string>("todoId");
+
+                    if (todoId == null)
+                    {
+                        return todos.GetTodosAsync();
+                    }
+                    
+                    //TODO: clean this up
+                    return Task.FromResult(new List<Todo>{todos.GetTodoByIdAsync(todoId).Result}.AsEnumerable());
+                });
         }
     }
     
