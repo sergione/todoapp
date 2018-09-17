@@ -13,8 +13,8 @@ const GET_TODO = gql`
     }
 `;
 
-const TodoDetails = () => (
-    <Query query={GET_TODO} variables={{todoId: "1000"}}>
+const TodoDetails = (props) => (
+    <Query query={GET_TODO} variables={{todoId: props.match.params.id}}>
         {({loading, error, data}) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error :(</p>;

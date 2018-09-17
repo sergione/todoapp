@@ -63,6 +63,17 @@ namespace TodoApp.Business.Schema
                     return todos.CreateAsync(todo);
                 }
             );
+            Field<TodoType>(
+                "updateTodo",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TodoUpdateInputType>> {Name = "todo"}),
+                resolve: context =>
+                {
+                    var todoInput = context.GetArgument<TodoUpdateInput>("todo");
+                    var todo = new Todo(todoInput.Id, todoInput.Description, todoInput.Complete);
+
+                    return todos.UpdateAsync(todo);
+                }
+            );
             FieldAsync<TodoType>(
                 "completeTodo",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "todoId" }),

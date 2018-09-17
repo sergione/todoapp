@@ -6,7 +6,7 @@ import TodoListItem from "./TodoListItem";
 const GET_TODOS = gql`
           {
             todos {
-              id
+              id       
               description  
               complete
             }

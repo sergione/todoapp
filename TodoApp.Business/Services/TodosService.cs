@@ -12,6 +12,7 @@ namespace TodoApp.Business.Services
         Task<Todo> GetTodoByIdAsync(string id);
         Task<IEnumerable<Todo>> GetTodosAsync();
         Task<Todo> CompleteAsync(string todoId);
+        Task<Todo> UpdateAsync(Todo todo);
     }
 
     public class TodosService : ITodosService
@@ -61,6 +62,14 @@ namespace TodoApp.Business.Services
             _events.AddEvent(todoEvent);
 
             return Task.FromResult(todo);
+        }
+
+        public Task<Todo> UpdateAsync(Todo inputTodo)
+        {
+            var todo = _todos.Single(x => x.Id == inputTodo.Id);
+            todo.Description = inputTodo.Description;
+            
+            return Task.FromResult<Todo>(inputTodo);
         }
     }
 }

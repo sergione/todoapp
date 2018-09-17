@@ -3,7 +3,7 @@ namespace TodoApp.Business.Models
     public class Todo
     {
         public string Id { get; }
-        public string Description { get; }
+        public string Description { get; set; }
         public bool Complete { get; set; }
 
         public Todo(string id, string description, bool complete)

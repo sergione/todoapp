@@ -22,6 +22,7 @@ namespace TodoApp.Api
             services.AddSingleton<TodosQuery>();
             services.AddSingleton<TodosSchema>();
             services.AddSingleton<TodoCreateInputType>();
+            services.AddSingleton<TodoUpdateInputType>();
             services.AddSingleton<TodosMutation>();
             services.AddSingleton<TodosSubscription>();
             services.AddSingleton<TodoEventType>();
