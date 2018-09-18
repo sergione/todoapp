@@ -30,14 +30,19 @@ namespace TodoApp.Business.Schema
             Name = "Query";
             Field<ListGraphType<TodoType>>(
                 "todos",
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "todoId"}),
+                arguments: new QueryArguments(
+                    new QueryArgument<StringGraphType> {Name = "todoId"}, 
+                    new QueryArgument<IntGraphType> {Name = "offset"},
+                    new QueryArgument<IntGraphType> {Name = "limit"}),
                 resolve: context =>
                 {
                     var todoId = context.GetArgument<string>("todoId");
+                    var offset = context.GetArgument<int>("offset");
+                    var limit = context.GetArgument<int>("limit");
 
                     if (todoId == null)
                     {
-                        return todos.GetTodosAsync();
+                        return todos.GetTodosAsync(offset, limit);
                     }
                     
                     //TODO: clean this up

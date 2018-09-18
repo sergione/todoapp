@@ -10,7 +10,7 @@ namespace TodoApp.Business.Services
     {
         Task<Todo> CreateAsync(Todo todo);
         Task<Todo> GetTodoByIdAsync(string id);
-        Task<IEnumerable<Todo>> GetTodosAsync();
+        Task<IEnumerable<Todo>> GetTodosAsync(int offset, int limit);
         Task<Todo> CompleteAsync(string todoId);
         Task<Todo> UpdateAsync(Todo todo);
     }
@@ -43,9 +43,9 @@ namespace TodoApp.Business.Services
             return Task.FromResult(_todos.Single(x => x.Id == id));
         }
 
-        public Task<IEnumerable<Todo>> GetTodosAsync()
+        public Task<IEnumerable<Todo>> GetTodosAsync(int offset, int limit)
         {
-            return Task.FromResult(_todos.AsEnumerable());
+            return Task.FromResult(_todos.Skip(offset).Take(limit).AsEnumerable());
         }
 
         public Task<Todo> CompleteAsync(string todoId)

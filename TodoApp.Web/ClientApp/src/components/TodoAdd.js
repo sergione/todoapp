@@ -5,7 +5,7 @@ import { Mutation } from "react-apollo";
 const ADD_TODO = gql`
   mutation createTodo($todo: TodoInput!) {
     createTodo(todo: $todo) {
-      id
+      id    
       description
       complete
     }
