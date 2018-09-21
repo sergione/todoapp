@@ -20,35 +20,53 @@ const TodoListInternal = ({todos}) => {
         ));    
 };
 
-const TodoList = () => (
-    <Query 
-        query={GET_TODOS}
-        variables={{
-            offset: 0,
-            limit: 2
-        }}
-        fetchPolicy="cache-and-network"
-    >
-        {({ loading, error, data, fetchMore }) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) return <p>Error :(</p>;
-            const onLoadMore = () => {
-                fetchMore({
-                    variables: {offset: data.todos.length},
-                    updateQuery: (prev, {fetchMoreResult}) => {
-                        if (!fetchMoreResult) return prev;
-                        return Object.assign({}, prev, {
-                            todos: [...prev.todos, ...fetchMoreResult.todos]
-                        });
-                    }
-                })    
-            };
-            return <div>
-                <TodoListInternal todos={data.todos}/>
-                <button onClick={onLoadMore}>load more</button>
-            </div>
-        }}
-    </Query>
-);
+class TodoList extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            showLoadMore: true
+        };
+    }
+    
+    render() {
+        return (
+            <Query
+                query={GET_TODOS}
+                variables={{
+                    offset: 0,
+                    limit: 2
+                }}
+                fetchPolicy="cache-and-network"
+            >
+                {({ loading, error, data, fetchMore }) => {
+                    if (loading) return <p>Loading...</p>;
+                    if (error) return <p>Error :(</p>;
+                    const onLoadMore = () => {
+                        fetchMore({
+                            variables: {offset: data.todos.length},
+                            updateQuery: (prev, {fetchMoreResult}) => {
+                                if (!fetchMoreResult) {
+                                    return prev;
+                                }
+                                
+                                if (fetchMoreResult.todos.length === 0) {
+                                    this.setState({showLoadMore: false});
+                                }
+                                
+                                return Object.assign({}, prev, {
+                                    todos: [...prev.todos, ...fetchMoreResult.todos]
+                                });
+                            }
+                        })
+                    };
+                    return <div>
+                        <TodoListInternal todos={data.todos}/>
+                        {this.state.showLoadMore &&<button onClick={onLoadMore}>load more</button>}
+                    </div>
+                }}
+            </Query>
+        );
+    }
+}
 
 export default TodoList;
